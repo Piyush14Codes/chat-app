@@ -5,6 +5,7 @@ import com.chatapp.demo.dto.MessageResponseDTO;
 import com.chatapp.demo.model.Message;
 import com.chatapp.demo.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,13 @@ public class MessageController {
     public MessageResponseDTO sendMessage(@RequestBody MessageRequestDTO messageRequestDTO) {
 
         Message message = new Message();
-        message.setSenderId(messageRequestDTO.getSenderId());
+
+        String userId = (String) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        message.setSenderId(Long.parseLong(userId));
         message.setReceiverId(messageRequestDTO.getReceiverId());
         message.setContent(messageRequestDTO.getContent());
         message.setTimestamp(LocalDateTime.now());
