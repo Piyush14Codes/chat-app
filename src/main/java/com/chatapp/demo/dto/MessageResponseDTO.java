@@ -1,5 +1,7 @@
 package com.chatapp.demo.dto;
 
+import com.chatapp.demo.enums.MessageStatus;
+
 import java.time.LocalDateTime;
 
 public class MessageResponseDTO {
@@ -8,6 +10,8 @@ public class MessageResponseDTO {
     private Long receiverId;
     private String content;
     private LocalDateTime timestamp;
+    private MessageStatus status;
+
 
     public Long getId() {
         return id;
@@ -47,5 +51,13 @@ public class MessageResponseDTO {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
     }
 }

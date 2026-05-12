@@ -2,6 +2,7 @@ package com.chatapp.demo.controller;
 
 import com.chatapp.demo.dto.MessageRequestDTO;
 import com.chatapp.demo.dto.MessageResponseDTO;
+import com.chatapp.demo.enums.MessageStatus;
 import com.chatapp.demo.model.Message;
 import com.chatapp.demo.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ public class MessageController {
         message.setSenderId(Long.parseLong(userId));
         message.setReceiverId(messageRequestDTO.getReceiverId());
         message.setContent(messageRequestDTO.getContent());
-        message.setTimestamp(LocalDateTime.now());
 
         Message savedMessage = messageService.sendMessage(message);
 
@@ -41,6 +41,7 @@ public class MessageController {
         response.setReceiverId(savedMessage.getReceiverId());
         response.setContent(savedMessage.getContent());
         response.setTimestamp(savedMessage.getTimestamp());
+        response.setStatus(savedMessage.getStatus());
 
         return response;
     }

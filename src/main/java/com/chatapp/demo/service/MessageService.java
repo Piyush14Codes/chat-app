@@ -1,5 +1,6 @@
 package com.chatapp.demo.service;
 
+import com.chatapp.demo.enums.MessageStatus;
 import com.chatapp.demo.model.Message;
 import com.chatapp.demo.model.User;
 import com.chatapp.demo.repository.MessageRepository;
@@ -7,6 +8,7 @@ import com.chatapp.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.RuntimeErrorException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,6 +40,9 @@ public class MessageService implements IMessageService {
         //set time-stamp
         message.setTimestamp(LocalDateTime.now());
 
+        //set status
+        message.setStatus(MessageStatus.SENT);
+
         //save message
         return messageRepository.save(message);
     }
@@ -58,4 +63,31 @@ public class MessageService implements IMessageService {
                 user2 , user1);
     }
 
+    public Message markMessageAsDelivered(Long messageId, Long userId) {
+
+        Message message = messageRepository.findById(messageId).
+                orElseThrow(() -> new RuntimeException("Message not found"));
+
+        if(!message.getReceiverId().equals(userId)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        message.setStatus(MessageStatus.DELIVERED);
+
+        return messageRepository.save(message);
+    }
+
+    public Message markMessageAsRead(Long messageId, Long userId) {
+
+        Message message = messageRepository.findById(messageId).
+                orElseThrow(() -> new RuntimeException("Message not found"));
+
+        if(!message.getReceiverId().equals(userId)) {
+            throw new RuntimeException("Unauthorized");
+        }
+
+        message.setStatus(MessageStatus.READ);
+
+        return messageRepository.save(message);
+    }
 }

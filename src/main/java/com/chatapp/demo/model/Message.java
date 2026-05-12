@@ -1,5 +1,6 @@
 package com.chatapp.demo.model;
 
+import com.chatapp.demo.enums.MessageStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,18 @@ public class Message {
 
     private String content;
     private LocalDateTime timestamp;
+
+    @Enumerated(EnumType.STRING)
+    private MessageStatus status;
+
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
+    }
+
 
     public Long getId() {
         return id;
